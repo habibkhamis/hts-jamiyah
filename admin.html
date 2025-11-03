@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - HTS Jamiyah</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js"></script>
+  <script src="admin.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>HTS Jamiyah - Admin Panel</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="subscribers.html">Subscribers</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</header>
+
+<div class="container" id="loginSection">
+  <h2>Admin Login</h2>
+  <input type="password" id="adminPass" placeholder="Enter Admin Password" style="padding:8px; width:70%; border-radius:6px; border:1px solid #ccc;">
+  <button onclick="loginAdmin()">Login</button>
+  <p id="loginError" style="color:red; display:none;">Incorrect password!</p>
+</div>
+
+<div class="container" id="adminSection" style="display:none;">
+  <h2>Manage Subscribers Proofs</h2>
+  <div id="adminControls"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Subscribers - HTS Jamiyah</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js"></script>
+  <script src="subscribers.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>HTS Jamiyah</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="subscribers.html">Subscribers</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>Subscribers List by Month</h2>
+  <div id="subscribersContainer"></div>
+</div>
+<!-- Pop-up for proof image -->
+<div id="imageModal" class="modal">
+  <span class="close" id="closeImgModal">&times;</span>
+  <img class="modal-content" id="fullProofImg">
+</div>
+
+<script>
+  // Function to open proof image in full screen modal
+  document.addEventListener("click", e => {
+    if (e.target.classList.contains("proof-img")) {
+      const modal = document.getElementById("imageModal");
+      const fullImg = document.getElementById("fullProofImg");
+      fullImg.src = e.target.src;
+      modal.style.display = "block";
+    }
+  });
+
+  // Close when clicking on X
+  document.getElementById("closeImgModal").onclick = () => {
+    document.getElementById("imageModal").style.display = "none";
+  };
+
+  // Close when clicking outside the image
+  window.onclick = e => {
+    const modal = document.getElementById("imageModal");
+    if (e.target === modal) modal.style.display = "none";
+  };
+</script>
+</body>
+</html>
