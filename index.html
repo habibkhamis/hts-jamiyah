@@ -1,175 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HTS Jamiyah</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f8f9fa;
-      line-height: 1.6;
+      margin: 0; padding: 0;
+      background: #f8f9fa;
+      color: #222;
     }
-
     header {
-      background-color: #003049;
-      color: #007bff;
-      padding: 60px 0 40px;
+      background: #003366;
+      color: #1e90ff;
       text-align: center;
-      font-size: 2rem;
+      padding: 40px 20px;
+      font-size: 28px;
       font-weight: bold;
+      line-height: 1.3;
     }
-
-    .intro {
-      max-width: 700px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 25px 35px;
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px 25px;
       border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      font-size: 1rem;
+      box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
     }
-
-    .intro p + p {
-      margin-top: 1em; /* مسافة سطر بين الفقرتين */
+    p {
+      line-height: 1.5;
+      margin-bottom: 16px;
+      font-size: 16px;
     }
-
-    h2 {
-      background-color: #e9ecef;
-      padding: 10px;
-      border-left: 5px solid #007bff;
-      font-size: 1.2rem;
-      margin-top: 50px;
+    p strong {
+      color: #000;
     }
-
     table {
-      border-collapse: collapse;
       width: 100%;
-      background-color: white;
-      margin-bottom: 40px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+      border-collapse: collapse;
+      margin-bottom: 35px;
     }
-
     th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
+      border: 1px solid #ccc;
+      padding: 9px 12px;
+      text-align: left;
+      vertical-align: middle;
     }
-
     th {
-      background-color: #007bff;
+      background: #1e90ff;
       color: white;
     }
-
-    img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 6px;
+    td img {
+      max-width: 100px;
+      max-height: 60px;
+      border-radius: 4px;
+      display: block;
+      margin-top: 4px;
+      object-fit: contain;
     }
-
-    tr.paid-row {
-      background-color: #d4edda; /* أخضر فاتح */
+    .paid-yes {
+      color: green;
+      font-weight: bold;
     }
-
-    tr.unpaid-row {
-      background-color: #f8d7da; /* أحمر فاتح */
+    .paid-pending {
+      color: orange;
+      font-weight: bold;
     }
-
-    .footer-note {
+    .error {
+      background: #ffe6e6;
+      color: #d00;
+      padding: 10px;
+      margin: 20px 0;
+      border: 1px solid #d00;
+      border-radius: 5px;
+      font-weight: bold;
       text-align: center;
-      margin: 40px 0 20px;
-      font-size: 0.9em;
-      color: #777;
+    }
+    footer {
+      font-size: 13px;
+      text-align: center;
+      margin: 30px 0 50px 0;
+      color: #666;
     }
   </style>
 </head>
 <body>
 
-<header>
-  HTS Jamiyah
-</header>
+<header>HTS Jamiyah</header>
 
-<div class="intro">
+<main>
   <p>
     Horizon Jamiyah is the digital version of the traditional community saving activity among trusted employees.
     Each participant contributes <strong>100 BHD</strong> monthly for <strong>10 months</strong> (from October 2025 to July 2026).
     Each month, one participant receives the total amount collected.
   </p>
-
   <p>
     This website allows participants to track payments, proof of transfers, and monthly recipients with full transparency.
   </p>
-</div>
 
-<div id="jamiyahContainer"></div>
+  <div id="error" class="error" style="display:none;"></div>
+  <div id="content"></div>
+</main>
 
-<div class="footer-note">
-  Last updated automatically from local data or uploaded proofs folder.
-</div>
+<footer>Last updated automatically from local data or uploaded proofs folder.</footer>
 
 <script>
-  async function loadData() {
-    try {
-      const response = await fetch("data.json");
-      if (!response.ok) throw new Error("data.json not found");
-      let data = await response.json();
+  function normalizeName(name) {
+    return name.toLowerCase().replace(/\s+/g, '_');
+  }
 
-      const container = document.getElementById("jamiyahContainer");
-      container.innerHTML = "";
+  function getProofURL(user, monthKey) {
+    const monthFormatted = monthKey.toLowerCase().replace(/-/g, '');
+    return `proof/${normalizeName(user)}_${monthFormatted}.jpg`;
+  }
 
-      for (const month in data.months) {
-        const info = data.months[month];
-        const monthDiv = document.createElement("div");
+  fetch('data.json')
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to load data.json. Please check the file exists and is accessible.');
+      return response.json();
+    })
+    .then(data => {
+      const contentDiv = document.getElementById('content');
+      const months = data.months;
 
-        let tableHTML = `
-          <h2>${month} — Recipient: ${info.recipient}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Participant</th>
-                <th>Paid?</th>
-                <th>Proof of Payment</th>
-              </tr>
-            </thead>
-            <tbody>
-        `;
-
-        info.users.forEach(user => {
-          const isPaid = info.paid && info.paid[user];
-          const paidSymbol = isPaid ? "✅" : "❌";
-          const rowClass = isPaid ? "paid-row" : "unpaid-row";
-          const proofPath = getProofPath(user, month);
-
-          tableHTML += `
-            <tr class="${rowClass}">
-              <td>${user}</td>
-              <td>${paidSymbol}</td>
-              <td><img src="${proofPath}" alt="proof" onerror="this.style.display='none'"></td>
-            </tr>
-          `;
-        });
-
-        tableHTML += "</tbody></table>";
-        monthDiv.innerHTML = tableHTML;
-        container.appendChild(monthDiv);
+      if (!months || Object.keys(months).length === 0) {
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error').textContent = 'No month data found in data.json.';
+        return;
       }
-    } catch (error) {
-      document.getElementById("jamiyahContainer").innerHTML = `
-        <p style="text-align:center; color:red;">
-          ⚠️ Unable to load data.json — please make sure it's uploaded correctly in the same folder.
-        </p>
-      `;
-    }
-  }
 
-  function getProofPath(user, month) {
-    const namePart = user.split(" ")[0].toLowerCase();
-    const monthPart = month.replace("-", "").toLowerCase();
-    return \`proof/\${namePart}_\${monthPart}.jpg\`;
-  }
+      let html = '';
+      for (const [monthKey, monthData] of Object.entries(months)) {
+        html += `<h3>${monthKey} - Recipient: <strong>${monthData.recipient}</strong></h3>`;
+        html += '<table><thead><tr><th>Participant</th><th>Paid</th><th>Proof of Payment</th></tr></thead><tbody>';
 
-  loadData();
+        const paid = monthData.paid || {};
+
+        // عرض جميع المشاركين لكل شهر حتى لو ما دفعوا
+        for (const user of monthData.users) {
+          const isPaid = paid[user] === true;
+          const proofURL = getProofURL(user, monthKey);
+
+          html += '<tr>';
+          html += `<td>${user}</td>`;
+
+          if (isPaid) {
+            html += `<td class="paid-yes">Yes</td>`;
+            html += `<td><a href="${proofURL}" target="_blank" rel="noopener noreferrer">` +
+                    `<img src="${proofURL}" alt="Proof of ${user} for ${monthKey}" onerror="this.style.display='none'" />` +
+                    `</a></td>`;
+          } else {
+            html += `<td class="paid-pending">Pending</td>`;
+            html += `<td>—</td>`;
+          }
+          html += '</tr>';
+        }
+        html += '</tbody></table>';
+      }
+      contentDiv.innerHTML = html;
+    })
+    .catch(err => {
+      const errorDiv = document.getElementById('error');
+      errorDiv.style.display = 'block';
+      errorDiv.textContent = 'Error loading data: ' + err.message;
+    });
 </script>
 
 </body>
