@@ -4,29 +4,68 @@
   <meta charset="UTF-8">
   <title>Admin - HTS Jamiyah</title>
   <link rel="stylesheet" href="style.css">
-  <script src="data.js"></script>
-  <script src="admin.js" defer></script>
 </head>
 <body>
-<header>
-  <h1>HTS Jamiyah - Admin Panel</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="subscribers.html">Subscribers</a>
-    <a href="admin.html">Admin</a>
-  </nav>
-</header>
+  <h1>Admin Panel</h1>
 
-<div class="container" id="loginSection">
-  <h2>Admin Login</h2>
-  <input type="password" id="adminPass" placeholder="Enter Admin Password" style="padding:8px; width:70%; border-radius:6px; border:1px solid #ccc;">
-  <button onclick="loginAdmin()">Login</button>
-  <p id="loginError" style="color:red; display:none;">Incorrect password!</p>
-</div>
+  <div class="form">
+    <label for="monthSelect">Select Month:</label>
+    <select id="monthSelect"></select>
 
-<div class="container" id="adminSection" style="display:none;">
-  <h2>Manage Subscribers Proofs</h2>
-  <div id="adminControls"></div>
-</div>
+    <label><input type="checkbox" id="paidCheckbox"> Mark as Paid</label>
+
+    <label for="proofFile">Upload Proof (image/pdf):</label>
+    <input type="file" id="proofFile" accept="image/*,application/pdf">
+
+    <button id="saveBtn">Save</button>
+  </div>
+
+  <p id="statusMsg"></p>
+
+  <script>
+    // تحميل البيانات من GitHub JSON
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => {
+        const monthSelect = document.getElementById("monthSelect");
+        
+        // ملء القائمة بالأشهر
+        Object.keys(data.months).forEach(month => {
+          const option = document.createElement("option");
+          option.value = month;
+          option.textContent = month;
+          monthSelect.appendChild(option);
+        });
+
+        const saveBtn = document.getElementById("saveBtn");
+        saveBtn.onclick = function() {
+          const month = monthSelect.value;
+          const paid = document.getElementById("paidCheckbox").checked;
+          const file = document.getElementById("proofFile").files[0];
+
+          let proofURL = null;
+
+          // إذا كان هناك ملف مرفق، نرفعه (في هذه الحالة: فقط نعرض اسم الملف لأننا لا نستخدم سيرفر)
+          if (file) {
+            proofURL = URL.createObjectURL(file);
+          }
+
+          // تحديث البيانات
+          data.months[month].paid = paid;
+          data.months[month].proof = proofURL;
+
+          // حفظ التغييرات في ملف data.json
+          fetch('data.json', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          }).then(() => {
+            document.getElementById("statusMsg").textContent = "✅ Data saved successfully!";
+          }).catch(() => {
+            document.getElementById("statusMsg").textContent = "❌ Error saving data.";
+          });
+        };
+      });
+  </script>
 </body>
 </html>
