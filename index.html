@@ -1,23 +1,62 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>جمعية HTS</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>HTS Jamiyah</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>جمعية HTS</h1>
+    <h1>HTS Jamiyah</h1>
+    <nav>
+      <a href="subscribers.html">Subscribers</a>
+      <a href="admin.html">Admin</a>
+    </nav>
   </header>
 
-  <main class="container">
-    <h2>تفاصيل الجمعية</h2>
-    <p>مرحبا بكم في جمعية HTS. هذه الصفحة تعرض جميع المعلومات الخاصة بالشهر الحالي ومتابعة دفع المشتركين.</p>
+  <div class="container">
+    <h2>Jamiyah Schedule & Payments</h2>
+    <table border="1" id="jamiyahTable">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Recipient</th>
+          <th>Participants</th>
+          <th>Payment Status</th>
+          <th>Proof of Payment</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-    <ul>
-      <li><a href="subscribers.html">عرض المشتركين وإثباتات الدفع</a></li>
-    </ul>
-  </main>
+  <script>
+    // تحميل البيانات من GitHub JSON
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => {
+        const tableBody = document.querySelector("#jamiyahTable tbody");
+        tableBody.innerHTML = ""; // Clear existing rows
+
+        for (const month in data.months) {
+          const info = data.months[month];
+          const row = document.createElement("tr");
+
+          // حالة الدفع
+          const statusText = info.paid ? "✅ Paid" : "❌ Not Paid";
+          // إثبات الدفع
+          const proofHTML = info.proof ? `<a href="${info.proof}" target="_blank">View Proof</a>` : "-";
+
+          row.innerHTML = `
+            <td>${month}</td>
+            <td>${info.recipient}</td>
+            <td>${info.users.join(", ")}</td>
+            <td>${statusText}</td>
+            <td>${proofHTML}</td>
+          `;
+          tableBody.appendChild(row);
+        }
+      });
+  </script>
 </body>
 </html>
