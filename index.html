@@ -9,20 +9,27 @@
       font-family: Arial, sans-serif;
       margin: 40px;
       background-color: #f8f9fa;
+      line-height: 1.6;
     }
+
     header {
       text-align: center;
       margin-bottom: 30px;
     }
-    nav a {
-      margin: 0 10px;
-      text-decoration: none;
+
+    header h1 {
       color: #007bff;
-      font-weight: bold;
     }
-    nav a:hover {
-      text-decoration: underline;
+
+    .intro {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
     }
+
     table {
       border-collapse: collapse;
       width: 100%;
@@ -30,52 +37,80 @@
       margin-bottom: 40px;
       box-shadow: 0 0 6px rgba(0,0,0,0.1);
     }
+
     th, td {
       border: 1px solid #ddd;
       padding: 10px;
       text-align: center;
     }
+
     th {
       background-color: #007bff;
       color: white;
     }
-    img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 6px;
-    }
+
     h2 {
       background-color: #e9ecef;
       padding: 10px;
       border-left: 5px solid #007bff;
       font-size: 1.2rem;
     }
+
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
     tr.paid-row {
       background-color: #d4edda; /* أخضر فاتح */
     }
+
     tr.unpaid-row {
       background-color: #f8d7da; /* أحمر فاتح */
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #777;
     }
   </style>
 </head>
 <body>
+
 <header>
   <h1>HTS Jamiyah</h1>
-  <nav>
-    <a href="subscribers.html">Subscribers</a> |
-    <a href="admin.html">Admin</a>
-  </nav>
 </header>
 
+<div class="intro">
+  <p>
+    Horizon Jamiyah is the digital version of the traditional community saving activity among trusted employees.
+    Each participant contributes <strong>100 BHD</strong> monthly for <strong>10 months</strong> (from October 2025 to July 2026).
+    Each month, one participant receives the total amount collected.
+  </p>
+
+  <p>
+    This website allows participants to track payments, proof of transfers, and monthly recipients with full transparency.
+  </p>
+</div>
+
+<!-- هنا الكود اللي يعرض تفاصيل كل شهر -->
 <div id="jamiyahContainer"></div>
 
+<div class="footer-note">
+  <p>Last updated automatically from local data or uploaded proofs folder.</p>
+</div>
+
 <script>
+  // تحميل البيانات من ملف JSON
   async function loadData() {
     const response = await fetch("data.json");
     let data = await response.json();
 
-    // إذا الأدمن عدّل البيانات محليًا نخليها تأخذ الأولوية
+    // لو فيه بيانات معدّلة محلياً نقرأها
     const localData = localStorage.getItem("jamiyahData");
     if (localData) {
       data = JSON.parse(localData);
@@ -84,6 +119,7 @@
     const container = document.getElementById("jamiyahContainer");
     container.innerHTML = "";
 
+    // توليد الجداول حسب الأشهر
     for (const month in data.months) {
       const info = data.months[month];
       const monthDiv = document.createElement("div");
@@ -102,23 +138,17 @@
       `;
 
       info.users.forEach(user => {
-        const paid = info.paid && info.paid[user] ? "✅" : "❌";
-        const proofPath =
-          info.proofs && info.proofs[user]
-            ? info.proofs[user]
-            : generateDefaultProofPath(user, month);
-
         const isPaid = info.paid && info.paid[user];
+        const paidSymbol = isPaid ? "✅" : "❌";
         const rowClass = isPaid ? "paid-row" : "unpaid-row";
+        const proofPath = getProofPath(user, month);
 
-        // إذا الملف فعلاً موجود في موقعك نعرض الصورة، غير ذلك نحط "—"
-        const isProofReal = proofPath.includes("habibkhamis.github.io");
-
+        // الصورة من فولدر proof تلقائياً
         tableHTML += `
           <tr class="${rowClass}">
             <td>${user}</td>
-            <td>${paid}</td>
-            <td>${isProofReal ? `<img src="${proofPath}" alt="proof">` : "—"}</td>
+            <td>${paidSymbol}</td>
+            <td><img src="${proofPath}" alt="proof" onerror="this.style.display='none'"></td>
           </tr>
         `;
       });
@@ -129,12 +159,11 @@
     }
   }
 
-  // يبني رابط الإثبات الافتراضي مثل:
-  // https://habibkhamis.github.io/hts-jamiyah/proof/hasan_oct25.jpg
-  function generateDefaultProofPath(user, month) {
+  // يبني الرابط الخاص بكل إثبات من مجلد proof/
+  function getProofPath(user, month) {
     const namePart = user.split(" ")[0].toLowerCase();
     const monthPart = month.replace("-", "").toLowerCase();
-    return `https://habibkhamis.github.io/hts-jamiyah/proof/${namePart}_${monthPart}.jpg`;
+    return `proof/${namePart}_${monthPart}.jpg`;
   }
 
   loadData();
