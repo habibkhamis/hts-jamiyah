@@ -1,71 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Admin - HTS Jamiyah</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    h1 {
+      text-align: center;
+    }
+    select, input[type="file"], button {
+      margin: 10px 0;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .save-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .save-btn:hover {
+      background-color: #0056b3;
+    }
+    #statusMsg {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>Admin Panel</h1>
+  <h1>Admin Panel - Update Payments</h1>
 
-  <div class="form">
-    <label for="monthSelect">Select Month:</label>
-    <select id="monthSelect"></select>
+  <label for="monthSelect">Select Month:</label>
+  <select id="monthSelect"></select>
 
-    <label><input type="checkbox" id="paidCheckbox"> Mark as Paid</label>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>Participant</th>
+        <th>Paid?</th>
+        <th>Upload Proof</th>
+        <th>Preview</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-    <label for="proofFile">Upload Proof (image/pdf):</label>
-    <input type="file" id="proofFile" accept="image/*,application/pdf">
-
-    <button id="saveBtn">Save</button>
-  </div>
-
+  <button class="save-btn" id="saveBtn">💾 Save Changes</button>
   <p id="statusMsg"></p>
 
   <script>
-    // تحميل البيانات من GitHub JSON
-    fetch('data.json')
-      .then(response => response.json())
-      .then(data => {
-        const monthSelect = document.getElementById("monthSelect");
-        
-        // ملء القائمة بالأشهر
-        Object.keys(data.months).forEach(month => {
-          const option = document.createElement("option");
-          option.value = month;
-          option.textContent = month;
-          monthSelect.appendChild(option);
-        });
+    // تحميل البيانات من JSON
+    let jamiyahData = {};
+    let selectedMonth = "";
 
-        const saveBtn = document.getElementById("saveBtn");
-        saveBtn.onclick = function() {
-          const month = monthSelect.value;
-          const paid = document.getElementById("paidCheckbox").checked;
-          const file = document.getElementById("proofFile").files[0];
+    async function loadData() {
+      const response = await fetch("data.json");
+      jamiyahData = await response.json();
+      populateMonthSelect();
+    }
 
-          let proofURL = null;
-
-          // إذا كان هناك ملف مرفق، نرفعه (في هذه الحالة: فقط نعرض اسم الملف لأننا لا نستخدم سيرفر)
-          if (file) {
-            proofURL = URL.createObjectURL(file);
-          }
-
-          // تحديث البيانات
-          data.months[month].paid = paid;
-          data.months[month].proof = proofURL;
-
-          // حفظ التغييرات في ملف data.json
-          fetch('data.json', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          }).then(() => {
-            document.getElementById("statusMsg").textContent = "✅ Data saved successfully!";
-          }).catch(() => {
-            document.getElementById("statusMsg").textContent = "❌ Error saving data.";
-          });
-        };
+    function populateMonthSelect() {
+      const monthSelect = document.getElementById("monthSelect");
+      Object.keys(jamiyahData.months).forEach((month) => {
+        const option = document.createElement("option");
+        option.value = month;
+        option.textContent = month;
+        monthSelect.appendChild(option);
       });
-  </script>
-</body>
-</html>
+      monthSelect.addEventListener("change", () => {
+        selectedMonth = monthSelect.value;
+        renderUserTable();
+      });
+      selectedMonth = monthSelect.value;
+      renderUserTable();
+    }
+
+    function renderUserTable() {
+      const tbody = document.querySelector("#userTable tbody");
+      tbody.innerHTML = "";
+      const monthInfo = jamiyahData.months[selectedMonth];
+      if (!monthInfo) return;
+
+      monthInfo.users.forEach((user) => {
+        const tr = document.createElement("tr");
+        const userKey = user.replace(/\s+/g, "_").toLowerCase();
+
+        const proofFileName = `${userKey}_${selectedMonth.replace("-", "").toLowerCase()}.jpg`;
+        const proofPath = `proof/${proofFileName}`;
+
+        // إذا عنده إثبات، نعرضه
+        const currentProof =
+          monthInfo.proofs && monthInfo.proofs[user]
+            ? monthInfo.proofs[user]
+            : proofPath;
+
+        const isPaid =
+          monthInfo.paid && monthInfo.paid[user] ? true : false;
+
+        tr.innerHTML = `
+          <td>${user}</td>
+          <td><input type="checkbox" class="paid-checkbox" data-user="${user}" ${
+          isPaid ? "checked" : ""
+        }></td>
+          <td><input type="file" class="proof-input" data-user="${user}" accept="image/*"></td>
+          <td><img id="img-${userKey}" src="${currentProof}" alt="No proof"></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.querySelectorAll(".proof-input").forEach((input) => {
+        input.addEventListener("change", (e) => {
+          const user = e.target.dataset.user;
+          const
