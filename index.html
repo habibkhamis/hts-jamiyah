@@ -15,6 +15,7 @@ body {
 }
 
 header { background-color: #023047; color: #fff; padding: 15px; text-align: center; }
+
 .container {
   max-width: 1000px;
   margin: 20px auto;
@@ -30,12 +31,14 @@ table { width: 100%; border-collapse: collapse; margin: 20px 0; }
 th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
 th { background-color: #023047; color: #fff; text-align: center; }
 td { text-align: center; }
+
 caption {
   caption-side: top;
   text-align: center;
   font-weight: bold;
-  font-size: 1.1em;
+  font-size: 1.2em;
   margin-bottom: 10px;
+  color: #fb8500; /* برتقالي */
 }
 
 img.proof-img {
@@ -48,6 +51,10 @@ img.proof-img {
 }
 
 img.proof-img:hover { transform: scale(1.1); }
+
+/* Row colors */
+.paid { background-color: #d4edda; }      /* أخضر فاتح */
+.pending { background-color: #ffe5b4; }   /* برتقالي فاتح */
 
 /* Fullscreen image modal */
 #imageModal {
@@ -138,14 +145,18 @@ fetch('data.json')
 
       info.users.forEach(user => {
         const tr = document.createElement('tr');
-        const paid = info.paid[user] ? 'Paid' : 'Pending';
+        const isPaid = info.paid[user];
+        tr.className = isPaid ? 'paid' : 'pending';
+        const paidText = isPaid ? 'Paid' : 'Pending';
+
         let proofHTML;
-        if(info.proofs[user]) {
+        if(info.proofs[user] && isPaid) {
           proofHTML = `<img class="proof-img" src="proof/${info.proofs[user]}" alt="${user} proof" onclick="openModal('proof/${info.proofs[user]}')">`;
         } else {
           proofHTML = 'Pending';
         }
-        tr.innerHTML = `<td>${user}</td><td>${paid}</td><td>${proofHTML}</td>`;
+
+        tr.innerHTML = `<td>${user}</td><td>${paidText}</td><td>${proofHTML}</td>`;
         tbody.appendChild(tr);
       });
 
