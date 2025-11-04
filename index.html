@@ -4,59 +4,118 @@
   <meta charset="UTF-8">
   <title>HTS Jamiyah</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background-color: white;
+      margin-bottom: 40px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    h2 {
+      background-color: #eee;
+      padding: 10px;
+      border-left: 5px solid #007bff;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>HTS Jamiyah</h1>
-    <nav>
-      <a href="subscribers.html">Subscribers</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
+<header>
+  <h1>HTS Jamiyah</h1>
+  <nav>
+    <a href="subscribers.html">Subscribers</a> |
+    <a href="admin.html">Admin</a>
+  </nav>
+</header>
 
-  <div class="container">
-    <h2>Jamiyah Schedule & Payments</h2>
-    <table border="1" id="jamiyahTable">
-      <thead>
-        <tr>
-          <th>Month</th>
-          <th>Recipient</th>
-          <th>Participants</th>
-          <th>Payment Status</th>
-          <th>Proof of Payment</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+<div id="jamiyahContainer"></div>
 
-  <script>
-    // تحميل البيانات من GitHub JSON
-    fetch('data.json')
-      .then(response => response.json())
-      .then(data => {
-        const tableBody = document.querySelector("#jamiyahTable tbody");
-        tableBody.innerHTML = ""; // Clear existing rows
+<script>
+  async function loadData() {
+    const response = await fetch("data.json");
+    let data = await response.json();
 
-        for (const month in data.months) {
-          const info = data.months[month];
-          const row = document.createElement("tr");
+    // لو فيه نسخة معدلة محليًا من الأدمن نقرأها
+    const localData = localStorage.getItem("jamiyahData");
+    if (localData) {
+      data = JSON.parse(localData);
+    }
 
-          // حالة الدفع
-          const statusText = info.paid ? "✅ Paid" : "❌ Not Paid";
-          // إثبات الدفع
-          const proofHTML = info.proof ? `<a href="${info.proof}" target="_blank">View Proof</a>` : "-";
+    const container = document.getElementById("jamiyahContainer");
+    container.innerHTML = "";
 
-          row.innerHTML = `
-            <td>${month}</td>
-            <td>${info.recipient}</td>
-            <td>${info.users.join(", ")}</td>
-            <td>${statusText}</td>
-            <td>${proofHTML}</td>
-          `;
-          tableBody.appendChild(row);
-        }
+    for (const month in data.months) {
+      const info = data.months[month];
+      const monthDiv = document.createElement("div");
+
+      let tableHTML = `
+        <h2>${month} — Recipient: ${info.recipient}</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Participant</th>
+              <th>Paid?</th>
+              <th>Proof of Payment</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      info.users.forEach(user => {
+        const paid = info.paid && info.paid[user] ? "✅" : "❌";
+        const proofPath =
+          info.proofs && info.proofs[user]
+            ? info.proofs[user]
+            : generateDefaultProofPath(user, month);
+
+        const isRealProof = proofPath.includes("habibkhamis.github.io");
+
+        tableHTML += `
+          <tr>
+            <td>${user}</td>
+            <td>${paid}</td>
+            <td>${isRealProof ? `<img src="${proofPath}" alt="proof">` : "—"}</td>
+          </tr>
+        `;
       });
-  </script>
+
+      tableHTML += "</tbody></table>";
+      monthDiv.innerHTML = tableHTML;
+      container.appendChild(monthDiv);
+    }
+  }
+
+  function generateDefaultProofPath(user, month) {
+    const namePart = user.split(" ")[0].toLowerCase();
+    const monthPart = month.replace("-", "").toLowerCase();
+    return \`https://habibkhamis.github.io/hts-jamiyah/proof/\${namePart}_\${monthPart}.jpg\`;
+  }
+
+  loadData();
+</script>
 </body>
 </html>
