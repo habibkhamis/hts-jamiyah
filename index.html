@@ -3,31 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>HTS Jamiyah</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 40px;
+      margin: 0;
       background-color: #f8f9fa;
       line-height: 1.6;
     }
 
     header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    header h1 {
+      background-color: #003049;
       color: #007bff;
+      padding: 60px 0 40px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
     }
 
     .intro {
       max-width: 700px;
-      margin: 0 auto 40px;
+      margin: 40px auto;
       background: #fff;
-      padding: 20px 30px;
+      padding: 25px 35px;
       border-radius: 8px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      font-size: 1rem;
+    }
+
+    .intro p + p {
+      margin-top: 1em; /* مسافة سطر بين الفقرتين */
+    }
+
+    h2 {
+      background-color: #e9ecef;
+      padding: 10px;
+      border-left: 5px solid #007bff;
+      font-size: 1.2rem;
+      margin-top: 50px;
     }
 
     table {
@@ -49,13 +61,6 @@
       color: white;
     }
 
-    h2 {
-      background-color: #e9ecef;
-      padding: 10px;
-      border-left: 5px solid #007bff;
-      font-size: 1.2rem;
-    }
-
     img {
       width: 60px;
       height: 60px;
@@ -73,7 +78,7 @@
 
     .footer-note {
       text-align: center;
-      margin-top: 50px;
+      margin: 40px 0 20px;
       font-size: 0.9em;
       color: #777;
     }
@@ -82,7 +87,7 @@
 <body>
 
 <header>
-  <h1>HTS Jamiyah</h1>
+  HTS Jamiyah
 </header>
 
 <div class="intro">
@@ -97,76 +102,75 @@
   </p>
 </div>
 
-<!-- هنا الكود اللي يعرض تفاصيل كل شهر -->
 <div id="jamiyahContainer"></div>
 
 <div class="footer-note">
-  <p>Last updated automatically from local data or uploaded proofs folder.</p>
+  Last updated automatically from local data or uploaded proofs folder.
 </div>
 
 <script>
-  // تحميل البيانات من ملف JSON
   async function loadData() {
-    const response = await fetch("data.json");
-    let data = await response.json();
+    try {
+      const response = await fetch("data.json");
+      if (!response.ok) throw new Error("data.json not found");
+      let data = await response.json();
 
-    // لو فيه بيانات معدّلة محلياً نقرأها
-    const localData = localStorage.getItem("jamiyahData");
-    if (localData) {
-      data = JSON.parse(localData);
-    }
+      const container = document.getElementById("jamiyahContainer");
+      container.innerHTML = "";
 
-    const container = document.getElementById("jamiyahContainer");
-    container.innerHTML = "";
+      for (const month in data.months) {
+        const info = data.months[month];
+        const monthDiv = document.createElement("div");
 
-    // توليد الجداول حسب الأشهر
-    for (const month in data.months) {
-      const info = data.months[month];
-      const monthDiv = document.createElement("div");
-
-      let tableHTML = `
-        <h2>${month} — Recipient: ${info.recipient}</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Participant</th>
-              <th>Paid?</th>
-              <th>Proof of Payment</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      info.users.forEach(user => {
-        const isPaid = info.paid && info.paid[user];
-        const paidSymbol = isPaid ? "✅" : "❌";
-        const rowClass = isPaid ? "paid-row" : "unpaid-row";
-        const proofPath = getProofPath(user, month);
-
-        // الصورة من فولدر proof تلقائياً
-        tableHTML += `
-          <tr class="${rowClass}">
-            <td>${user}</td>
-            <td>${paidSymbol}</td>
-            <td><img src="${proofPath}" alt="proof" onerror="this.style.display='none'"></td>
-          </tr>
+        let tableHTML = `
+          <h2>${month} — Recipient: ${info.recipient}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Participant</th>
+                <th>Paid?</th>
+                <th>Proof of Payment</th>
+              </tr>
+            </thead>
+            <tbody>
         `;
-      });
 
-      tableHTML += "</tbody></table>";
-      monthDiv.innerHTML = tableHTML;
-      container.appendChild(monthDiv);
+        info.users.forEach(user => {
+          const isPaid = info.paid && info.paid[user];
+          const paidSymbol = isPaid ? "✅" : "❌";
+          const rowClass = isPaid ? "paid-row" : "unpaid-row";
+          const proofPath = getProofPath(user, month);
+
+          tableHTML += `
+            <tr class="${rowClass}">
+              <td>${user}</td>
+              <td>${paidSymbol}</td>
+              <td><img src="${proofPath}" alt="proof" onerror="this.style.display='none'"></td>
+            </tr>
+          `;
+        });
+
+        tableHTML += "</tbody></table>";
+        monthDiv.innerHTML = tableHTML;
+        container.appendChild(monthDiv);
+      }
+    } catch (error) {
+      document.getElementById("jamiyahContainer").innerHTML = `
+        <p style="text-align:center; color:red;">
+          ⚠️ Unable to load data.json — please make sure it's uploaded correctly in the same folder.
+        </p>
+      `;
     }
   }
 
-  // يبني الرابط الخاص بكل إثبات من مجلد proof/
   function getProofPath(user, month) {
     const namePart = user.split(" ")[0].toLowerCase();
     const monthPart = month.replace("-", "").toLowerCase();
-    return `proof/${namePart}_${monthPart}.jpg`;
+    return \`proof/\${namePart}_\${monthPart}.jpg\`;
   }
 
   loadData();
 </script>
+
 </body>
 </html>
