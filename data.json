@@ -2,53 +2,177 @@
   "months": {
     "Oct-25": {
       "recipient": "ZUHAIR ALSAFFAR",
-      "users": ["HUSAIN YUSUF", "HABIB KHAMIS", "ABU ADEL", "HASAN SAHWAN", "RAJA", "UM AHMED", "JAFFAR JUMA", "ABU HASAN1", "ABU HASAN2"],
-      "paid": {}
+      "users": [
+        "HUSAIN YUSUF",
+        "HABIB KHAMIS",
+        "ABU ADEL",
+        "HASAN SAHWAN",
+        "RAJA",
+        "UM AHMED",
+        "JAFFAR JUMA",
+        "ABU HASAN1",
+        "ABU HASAN2"
+      ],
+      "paid": {"HUSAIN YUSUF": true,
+    "HABIB KHAMIS": true,
+    "ABU ADEL": true,
+    "HASAN SAHWAN": true,
+    "RAJA": true,
+    "UM AHMED": true,
+    "JAFFAR JUMA": true,
+    "ABU HASAN1": true,
+    "ABU HASAN1": true},
+      "proofs": {"HUSAIN YUSUF": "husain_oct25.jpg",
+    "HABIB KHAMIS": "habib_oct25.jpg",
+    "ABU ADEL": "abuadel_oct25.jpg",
+    "HASAN SAHWAN": "hasan_oct25.jpg",
+    "RAJA": "raja_oct25.jpg",
+    "UM AHMED": "umahmed_oct25.jpg",
+    "JAFFAR JUMA": "jaffar_oct25.jpg",
+    "ABU HASAN1": "abuhasan1_oct25.jpg",
+    "ABU HASAN1": "abuhasan2_oct25.jpg"}
     },
     "Nov-25": {
       "recipient": "HUSAIN YUSUF",
-      "users": ["ZUHAIR ALSAFFAR", "HABIB KHAMIS", "ABU ADEL", "HASAN SAHWAN", "RAJA", "UM AHMED", "JAFFAR JUMA", "ABU HASAN1", "ABU HASAN2"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HABIB KHAMIS",
+        "ABU ADEL",
+        "HASAN SAHWAN",
+        "RAJA",
+        "UM AHMED",
+        "JAFFAR JUMA",
+        "ABU HASAN1",
+        "ABU HASAN2"
+      ],
+      "paid": {},
+      "proofs": {}
     },
     "Dec-25": {
       "recipient": "HABIB KHAMIS",
-      "users": ["ZUHAIR ALSAFFAR", "HUSAIN YUSUF", "ABU ADEL", "HASAN SAHWAN", "RAJA", "UM AHMED", "JAFFAR JUMA", "ABU HASAN1", "ABU HASAN2"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HUSAIN YUSUF",
+        "ABU ADEL",
+        "HASAN SAHWAN",
+        "RAJA",
+        "UM AHMED",
+        "JAFFAR JUMA",
+        "ABU HASAN1",
+        "ABU HASAN2"
+      ],
+      "paid": {},
+      "proofs": {}
     },
     "Jan-26": {
       "recipient": "ABU ADEL",
-      "users": ["ZUHAIR ALSAFFAR", "HUSAIN YUSUF", "HABIB KHAMIS", "HASAN SAHWAN", "RAJA", "UM AHMED", "JAFFAR JUMA", "ABU HASAN1", "ABU HASAN2"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HUSAIN YUSUF",
+        "HABIB KHAMIS",
+        "HASAN SAHWAN",
+        "RAJA",
+        "UM AHMED",
+        "JAFFAR JUMA",
+        "ABU HASAN1",
+        "ABU HASAN2"
+      ],
+      "paid": {},
+      "proofs": {}
     },
     "Feb-26": {
       "recipient": "HASAN SAHWAN",
-      "users": ["ZUHAIR ALSAFFAR", "HUSAIN YUSUF", "HABIB KHAMIS", "ABU ADEL", "RAJA", "UM AHMED", "JAFFAR JUMA", "ABU HASAN1", "ABU HASAN2"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HUSAIN YUSUF",
+        "HABIB KHAMIS",
+        "ABU ADEL",
+        "RAJA",
+        "UM AHMED",
+        "JAFFAR JUMA",
+        "ABU HASAN1",
+        "ABU HASAN2"
+      ],
+      "paid": {},
+      "proofs": {}
     },
     "Mar-26": {
       "recipient": "RAJA",
-      "users": ["ZUHAIR ALSAFFAR", "HUSAIN YUSUF", "HABIB KHAMIS", "ABU ADEL", "HASAN SAHWAN", "UM AHMED", "JAFFAR JUMA", "ABU HASAN1", "ABU HASAN2"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HUSAIN YUSUF",
+        "HABIB KHAMIS",
+        "ABU ADEL",
+        "HASAN SAHWAN",
+        "UM AHMED",
+        "JAFFAR JUMA",
+        "ABU HASAN1",
+        "ABU HASAN2"
+      ],
+      "paid": {},
+      "proofs": {}
     },
     "Apr-26": {
       "recipient": "UM AHMED",
-      "users": ["ZUHAIR ALSAFFAR", "HUSAIN YUSUF", "HABIB KHAMIS", "ABU ADEL", "HASAN SAHWAN", "RAJA", "JAFFAR JUMA", "ABU HASAN1", "ABU HASAN2"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HUSAIN YUSUF",
+        "HABIB KHAMIS",
+        "ABU ADEL",
+        "HASAN SAHWAN",
+        "RAJA",
+        "JAFFAR JUMA",
+        "ABU HASAN1",
+        "ABU HASAN2"
+      ],
+      "paid": {},
+      "proofs": {}
     },
     "May-26": {
       "recipient": "JAFFAR JUMA",
-      "users": ["ZUHAIR ALSAFFAR", "HUSAIN YUSUF", "HABIB KHAMIS", "ABU ADEL", "HASAN SAHWAN", "RAJA", "UM AHMED", "ABU HASAN1", "ABU HASAN2"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HUSAIN YUSUF",
+        "HABIB KHAMIS",
+        "ABU ADEL",
+        "HASAN SAHWAN",
+        "RAJA",
+        "UM AHMED",
+        "ABU HASAN1",
+        "ABU HASAN2"
+      ],
+      "paid": {},
+      "proofs": {}
     },
     "Jun-26": {
       "recipient": "ABU HASAN",
-      "users": ["ZUHAIR ALSAFFAR", "HUSAIN YUSUF", "HABIB KHAMIS", "ABU ADEL", "HASAN SAHWAN", "RAJA", "UM AHMED", "JAFFAR JUMA"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HUSAIN YUSUF",
+        "HABIB KHAMIS",
+        "ABU ADEL",
+        "HASAN SAHWAN",
+        "RAJA",
+        "UM AHMED",
+        "JAFFAR JUMA"
+      ],
+      "paid": {},
+      "proofs": {}
     },
     "Jul-26": {
       "recipient": "ABU HASAN",
-      "users": ["ZUHAIR ALSAFFAR", "HUSAIN YUSUF", "HABIB KHAMIS", "ABU ADEL", "HASAN SAHWAN", "RAJA", "UM AHMED", "JAFFAR JUMA"],
-      "paid": {}
+      "users": [
+        "ZUHAIR ALSAFFAR",
+        "HUSAIN YUSUF",
+        "HABIB KHAMIS",
+        "ABU ADEL",
+        "HASAN SAHWAN",
+        "RAJA",
+        "UM AHMED",
+        "JAFFAR JUMA"
+      ],
+      "paid": {},
+      "proofs": {}
     }
   }
 }
