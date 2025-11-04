@@ -8,18 +8,27 @@
     body {
       font-family: Arial, sans-serif;
       margin: 40px;
-      background-color: #f9f9f9;
+      background-color: #f8f9fa;
     }
     header {
       text-align: center;
       margin-bottom: 30px;
+    }
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
     }
     table {
       border-collapse: collapse;
       width: 100%;
       background-color: white;
       margin-bottom: 40px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
     }
     th, td {
       border: 1px solid #ddd;
@@ -37,9 +46,16 @@
       border-radius: 6px;
     }
     h2 {
-      background-color: #eee;
+      background-color: #e9ecef;
       padding: 10px;
       border-left: 5px solid #007bff;
+      font-size: 1.2rem;
+    }
+    tr.paid-row {
+      background-color: #d4edda; /* أخضر فاتح */
+    }
+    tr.unpaid-row {
+      background-color: #f8d7da; /* أحمر فاتح */
     }
   </style>
 </head>
@@ -59,7 +75,7 @@
     const response = await fetch("data.json");
     let data = await response.json();
 
-    // لو فيه نسخة معدلة محليًا من الأدمن نقرأها
+    // إذا الأدمن عدّل البيانات محليًا نخليها تأخذ الأولوية
     const localData = localStorage.getItem("jamiyahData");
     if (localData) {
       data = JSON.parse(localData);
@@ -92,13 +108,17 @@
             ? info.proofs[user]
             : generateDefaultProofPath(user, month);
 
-        const isRealProof = proofPath.includes("habibkhamis.github.io");
+        const isPaid = info.paid && info.paid[user];
+        const rowClass = isPaid ? "paid-row" : "unpaid-row";
+
+        // إذا الملف فعلاً موجود في موقعك نعرض الصورة، غير ذلك نحط "—"
+        const isProofReal = proofPath.includes("habibkhamis.github.io");
 
         tableHTML += `
-          <tr>
+          <tr class="${rowClass}">
             <td>${user}</td>
             <td>${paid}</td>
-            <td>${isRealProof ? `<img src="${proofPath}" alt="proof">` : "—"}</td>
+            <td>${isProofReal ? `<img src="${proofPath}" alt="proof">` : "—"}</td>
           </tr>
         `;
       });
@@ -109,10 +129,12 @@
     }
   }
 
+  // يبني رابط الإثبات الافتراضي مثل:
+  // https://habibkhamis.github.io/hts-jamiyah/proof/hasan_oct25.jpg
   function generateDefaultProofPath(user, month) {
     const namePart = user.split(" ")[0].toLowerCase();
     const monthPart = month.replace("-", "").toLowerCase();
-    return \`https://habibkhamis.github.io/hts-jamiyah/proof/\${namePart}_\${monthPart}.jpg\`;
+    return `https://habibkhamis.github.io/hts-jamiyah/proof/${namePart}_${monthPart}.jpg`;
   }
 
   loadData();
