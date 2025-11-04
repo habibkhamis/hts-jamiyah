@@ -1,136 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Admin - HTS Jamiyah</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>HTS Jamiyah</title>
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 40px;
+      background-color: #f8f9fa;
+      line-height: 1.6;
     }
-    h1 {
+
+    header {
       text-align: center;
+      margin-bottom: 30px;
     }
-    select, input[type="file"], button {
-      margin: 10px 0;
+
+    header h1 {
+      color: #007bff;
     }
+
+    .intro {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    }
+
     table {
       border-collapse: collapse;
       width: 100%;
-      margin-top: 20px;
+      background-color: white;
+      margin-bottom: 40px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
     }
+
     th, td {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       padding: 10px;
       text-align: center;
     }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    h2 {
+      background-color: #e9ecef;
+      padding: 10px;
+      border-left: 5px solid #007bff;
+      font-size: 1.2rem;
+    }
+
     img {
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       object-fit: cover;
       border-radius: 6px;
     }
-    .save-btn {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+
+    tr.paid-row {
+      background-color: #d4edda; /* أخضر فاتح */
     }
-    .save-btn:hover {
-      background-color: #0056b3;
+
+    tr.unpaid-row {
+      background-color: #f8d7da; /* أحمر فاتح */
     }
-    #statusMsg {
-      margin-top: 15px;
-      color: green;
-      font-weight: bold;
+
+    .footer-note {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #777;
     }
   </style>
 </head>
 <body>
-  <h1>Admin Panel - Update Payments</h1>
 
-  <label for="monthSelect">Select Month:</label>
-  <select id="monthSelect"></select>
+<header>
+  <h1>HTS Jamiyah</h1>
+</header>
 
-  <table id="userTable">
-    <thead>
-      <tr>
-        <th>Participant</th>
-        <th>Paid?</th>
-        <th>Upload Proof</th>
-        <th>Preview</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<div class="intro">
+  <p>
+    Horizon Jamiyah is the digital version of the traditional community saving activity among trusted employees.
+    Each participant contributes <strong>100 BHD</strong> monthly for <strong>10 months</strong> (from October 2025 to July 2026).
+    Each month, one participant receives the total amount collected.
+  </p>
 
-  <button class="save-btn" id="saveBtn">💾 Save Changes</button>
-  <p id="statusMsg"></p>
+  <p>
+    This website allows participants to track payments, proof of transfers, and monthly recipients with full transparency.
+  </p>
+</div>
 
-  <script>
-    // تحميل البيانات من JSON
-    let jamiyahData = {};
-    let selectedMonth = "";
+<!-- هنا الكود اللي يعرض تفاصيل كل شهر -->
+<div id="jamiyahContainer"></div>
 
-    async function loadData() {
-      const response = await fetch("data.json");
-      jamiyahData = await response.json();
-      populateMonthSelect();
+<div class="footer-note">
+  <p>Last updated automatically from local data or uploaded proofs folder.</p>
+</div>
+
+<script>
+  // تحميل البيانات من ملف JSON
+  async function loadData() {
+    const response = await fetch("data.json");
+    let data = await response.json();
+
+    // لو فيه بيانات معدّلة محلياً نقرأها
+    const localData = localStorage.getItem("jamiyahData");
+    if (localData) {
+      data = JSON.parse(localData);
     }
 
-    function populateMonthSelect() {
-      const monthSelect = document.getElementById("monthSelect");
-      Object.keys(jamiyahData.months).forEach((month) => {
-        const option = document.createElement("option");
-        option.value = month;
-        option.textContent = month;
-        monthSelect.appendChild(option);
-      });
-      monthSelect.addEventListener("change", () => {
-        selectedMonth = monthSelect.value;
-        renderUserTable();
-      });
-      selectedMonth = monthSelect.value;
-      renderUserTable();
-    }
+    const container = document.getElementById("jamiyahContainer");
+    container.innerHTML = "";
 
-    function renderUserTable() {
-      const tbody = document.querySelector("#userTable tbody");
-      tbody.innerHTML = "";
-      const monthInfo = jamiyahData.months[selectedMonth];
-      if (!monthInfo) return;
+    // توليد الجداول حسب الأشهر
+    for (const month in data.months) {
+      const info = data.months[month];
+      const monthDiv = document.createElement("div");
 
-      monthInfo.users.forEach((user) => {
-        const tr = document.createElement("tr");
-        const userKey = user.replace(/\s+/g, "_").toLowerCase();
+      let tableHTML = `
+        <h2>${month} — Recipient: ${info.recipient}</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Participant</th>
+              <th>Paid?</th>
+              <th>Proof of Payment</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
 
-        const proofFileName = `${userKey}_${selectedMonth.replace("-", "").toLowerCase()}.jpg`;
-        const proofPath = `proof/${proofFileName}`;
+      info.users.forEach(user => {
+        const isPaid = info.paid && info.paid[user];
+        const paidSymbol = isPaid ? "✅" : "❌";
+        const rowClass = isPaid ? "paid-row" : "unpaid-row";
+        const proofPath = getProofPath(user, month);
 
-        // إذا عنده إثبات، نعرضه
-        const currentProof =
-          monthInfo.proofs && monthInfo.proofs[user]
-            ? monthInfo.proofs[user]
-            : proofPath;
-
-        const isPaid =
-          monthInfo.paid && monthInfo.paid[user] ? true : false;
-
-        tr.innerHTML = `
-          <td>${user}</td>
-          <td><input type="checkbox" class="paid-checkbox" data-user="${user}" ${
-          isPaid ? "checked" : ""
-        }></td>
-          <td><input type="file" class="proof-input" data-user="${user}" accept="image/*"></td>
-          <td><img id="img-${userKey}" src="${currentProof}" alt="No proof"></td>
+        // الصورة من فولدر proof تلقائياً
+        tableHTML += `
+          <tr class="${rowClass}">
+            <td>${user}</td>
+            <td>${paidSymbol}</td>
+            <td><img src="${proofPath}" alt="proof" onerror="this.style.display='none'"></td>
+          </tr>
         `;
-        tbody.appendChild(tr);
       });
 
-      document.querySelectorAll(".proof-input").forEach((input) => {
-        input.addEventListener("change", (e) => {
-          const user = e.target.dataset.user;
-          const
+      tableHTML += "</tbody></table>";
+      monthDiv.innerHTML = tableHTML;
+      container.appendChild(monthDiv);
+    }
+  }
+
+  // يبني الرابط الخاص بكل إثبات من مجلد proof/
+  function getProofPath(user, month) {
+    const namePart = user.split(" ")[0].toLowerCase();
+    const monthPart = month.replace("-", "").toLowerCase();
+    return `proof/${namePart}_${monthPart}.jpg`;
+  }
+
+  loadData();
+</script>
+</body>
+</html>
