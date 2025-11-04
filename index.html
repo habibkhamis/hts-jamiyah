@@ -5,13 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Horizon Jamiyah</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 20px; }
-  h1 { text-align: center; margin-bottom: 10px; }
-  p { margin-bottom: 15px; }
-  table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-  th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+  body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }
+  h1 { text-align: center; margin-bottom: 15px; }
+  p { margin-bottom: 20px; line-height: 1.6; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  caption { font-weight: bold; font-size: 1.1em; padding: 10px; background-color: #e0e0e0; }
+  th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
   th { background-color: #f2f2f2; }
-  img { max-width: 150px; }
+  img { max-width: 120px; max-height: 80px; transition: transform 0.2s; }
+  img:hover { transform: scale(1.5); }
+  .month-paid { background-color: #d4edda; }  /* أخضر فاتح */
+  .month-pending { background-color: #fff3cd; } /* أصفر فاتح */
 </style>
 </head>
 <body>
@@ -33,12 +37,19 @@ fetch('data.json')
   .then(response => response.json())
   .then(data => {
     const container = document.getElementById('tables');
+
     for (const [month, info] of Object.entries(data.months)) {
       const table = document.createElement('table');
 
+      // حساب نسبة الدفع
+      const total = info.users.length;
+      let paidCount = 0;
+      info.users.forEach(u => { if(info.paid[u]) paidCount++; });
+      const monthClass = (paidCount / total) > 0.5 ? 'month-paid' : 'month-pending';
+
       const caption = document.createElement('caption');
-      caption.textContent = month + ' — Recipient: ' + info.recipient;
-      caption.style.fontWeight = 'bold';
+      caption.textContent = `${month} — Recipient: ${info.recipient}`;
+      caption.className = monthClass;
       table.appendChild(caption);
 
       const thead = document.createElement('thead');
@@ -54,6 +65,7 @@ fetch('data.json')
         tr.innerHTML = `<td>${user}</td><td>${paid}</td><td>${proofHTML}</td>`;
         tbody.appendChild(tr);
       });
+
       table.appendChild(tbody);
       container.appendChild(table);
     }
