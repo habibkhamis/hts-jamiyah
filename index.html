@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Horizon Jamiyah</title>
 <style>
 /* Reset */
@@ -14,49 +14,82 @@ body {
   color: #333;
 }
 
-header { background-color: #023047; color: #fff; padding: 15px; text-align: center; }
+header {
+  background-color: #073763; /* أزرق غامق */
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.8rem;
+  letter-spacing: 1.1px;
+}
 
 .container {
   max-width: 1000px;
   margin: 20px auto;
   background: #fff;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 25px 30px;
+  border-radius: 14px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-h1, h2 { text-align: center; margin-bottom: 20px; }
+h1, h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+  color: #073763; /* نفس الأزرق الغامق */
+}
 
-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
-th { background-color: #023047; color: #fff; text-align: center; }
-td { text-align: center; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
 
 caption {
   caption-side: top;
   text-align: center;
-  font-weight: bold;
-  font-size: 1.2em;
+  font-weight: 700;
+  font-size: 1.25em;
   margin-bottom: 10px;
-  color: #fb8500; /* برتقالي */
+  color: #fb8500; /* برتقالي ذهبي */
+}
+
+th, td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+th {
+  background-color: #073763; /* أزرق غامق */
+  color: #fff;
+}
+
+.paid {
+  background-color: #d4edda; /* أخضر فاتح */
+}
+
+.pending {
+  background-color: #fff4e5; /* برتقالي فاتح */
 }
 
 img.proof-img {
   width: 50px;
   height: 50px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease-in-out;
 }
 
-img.proof-img:hover { transform: scale(1.1); }
+img.proof-img:hover {
+  transform: scale(1.1);
+}
 
-/* Row colors */
-.paid { background-color: #d4edda; }      /* أخضر فاتح */
-.pending { background-color: #ffe5b4; }   /* برتقالي فاتح */
-
-/* Fullscreen image modal */
+/* Modal */
 #imageModal {
   display: none;
   position: fixed;
@@ -75,7 +108,7 @@ img.proof-img:hover { transform: scale(1.1); }
   display: block;
   width: 80%;
   max-width: 700px;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 #imageModal .close {
@@ -88,9 +121,15 @@ img.proof-img:hover { transform: scale(1.1); }
   cursor: pointer;
 }
 
-#imageModal .close:hover { color: #fb8500; }
+#imageModal .close:hover {
+  color: #fb8500; /* برتقالي ذهبي */
+}
 
-p { margin: 15px 0; text-align: center; line-height: 1.5; }
+p {
+  margin: 15px 0;
+  text-align: center;
+  line-height: 1.5;
+}
 </style>
 </head>
 <body>
