@@ -42,11 +42,22 @@
         "RAJA",
         "UM AHMED",
         "JAFFAR JUMA",
-        "ABU HASAN1",
-        "ABU HASAN2"
+        "ABU HASAN"
       ],
-      "paid": {},
-      "proofs": {}
+      "paid": {"HABIB KHAMIS": true,
+    "ABU ADEL": true,
+    "HASAN SAHWAN": true,
+    "RAJA": true,
+    "UM AHMED": true,
+    "JAFFAR JUMA": true,
+    "ABU HASAN": true},
+      "proofs": {"HABIB KHAMIS": "habib_nov25.jpg",
+    "ABU ADEL": "abuadel_nov25.jpg",
+    "HASAN SAHWAN": "hasan_nov25.jpg",
+    "RAJA": "raja_nov25.jpg",
+    "UM AHMED": "umahmed_nov25.jpg",
+    "JAFFAR JUMA": "jaffar_nov25.jpg",
+    "ABU HASAN": "abuhasan_nov25.jpg"}
     },
     "Dec-25": {
       "recipient": "HABIB KHAMIS",
@@ -58,8 +69,7 @@
         "RAJA",
         "UM AHMED",
         "JAFFAR JUMA",
-        "ABU HASAN1",
-        "ABU HASAN2"
+        "ABU HASAN"
       ],
       "paid": {},
       "proofs": {}
@@ -74,8 +84,7 @@
         "RAJA",
         "UM AHMED",
         "JAFFAR JUMA",
-        "ABU HASAN1",
-        "ABU HASAN2"
+        "ABU HASAN"
       ],
       "paid": {},
       "proofs": {}
@@ -90,8 +99,7 @@
         "RAJA",
         "UM AHMED",
         "JAFFAR JUMA",
-        "ABU HASAN1",
-        "ABU HASAN2"
+        "ABU HASAN"
       ],
       "paid": {},
       "proofs": {}
@@ -106,8 +114,7 @@
         "HASAN SAHWAN",
         "UM AHMED",
         "JAFFAR JUMA",
-        "ABU HASAN1",
-        "ABU HASAN2"
+        "ABU HASAN"
       ],
       "paid": {},
       "proofs": {}
@@ -122,8 +129,7 @@
         "HASAN SAHWAN",
         "RAJA",
         "JAFFAR JUMA",
-        "ABU HASAN1",
-        "ABU HASAN2"
+        "ABU HASAN"
       ],
       "paid": {},
       "proofs": {}
@@ -138,8 +144,7 @@
         "HASAN SAHWAN",
         "RAJA",
         "UM AHMED",
-        "ABU HASAN1",
-        "ABU HASAN2"
+        "ABU HASAN"
       ],
       "paid": {},
       "proofs": {}
