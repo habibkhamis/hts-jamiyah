@@ -102,8 +102,22 @@
         "JAFFAR JUMA",
         "ABU HASAN"
       ],
-      "paid": {},
-      "proofs": {}
+      "paid": {"ZUHAIR ALSAFFAR": true,
+    "HUSAIN YUSUF": true,
+    "HABIB KHAMIS": true,
+    "HASAN SAHWAN": true,
+    "RAJA": true,
+    "UM AHMED": true,
+    "JAFFAR JUMA": true,
+    "ABU HASAN": true},
+      "proofs": {"ZUHAIR ALSAFFAR": "zuhair_jan26.jpeg",
+    "HUSAIN YUSUF": "husain_jan26.jpeg",
+    "HABIB KHAMIS": "habib_jan26.jpeg",
+    "HASAN SAHWAN": "hasan_jan26.jpeg",
+    "RAJA": "raja_jan26.jpeg",
+    "UM AHMED": "umahmed_jan26.jpeg",
+    "JAFFAR JUMA": "jaffar_jan26.jpeg",
+    "ABU HASAN": "abuhasan_jan26.jpeg"}
     },
     "Feb-26": {
       "recipient": "HASAN SAHWAN",
