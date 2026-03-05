@@ -131,7 +131,7 @@
         "JAFFAR JUMA",
         "ABU HASAN"
       ],
-      "paid": {"ZUHAIR ALSAFFAR": false,
+      "paid": {"ZUHAIR ALSAFFAR": true,
         "HUSAIN YUSUF": true,
         "HABIB KHAMIS": true,
     "ABU ADEL": true,
@@ -139,7 +139,8 @@
     "UM AHMED": true,
     "JAFFAR JUMA": true,
     "ABU HASAN": true},
-      "proofs": {"HUSAIN YUSUF": "husain_feb26.jpeg",
+      "proofs": {"ZUHAIR ALSAFFAR": "zuhair_feb26.jpeg",
+        "HUSAIN YUSUF": "husain_feb26.jpeg",
         "HABIB KHAMIS": "habib_feb26.jpeg",
     "ABU ADEL": "abuadel_feb26.jpeg",
     "RAJA": "raja_feb26.jpeg",
