@@ -160,8 +160,22 @@
         "JAFFAR JUMA",
         "ABU HASAN"
       ],
-      "paid": {},
-      "proofs": {}
+      "paid": {"ZUHAIR ALSAFFAR": false,
+        "HUSAIN YUSUF": true,
+        "HABIB KHAMIS": true,
+    "ABU ADEL": false,
+    "HASAN SAHWAN": true,
+    "UM AHMED": false,
+    "JAFFAR JUMA": false,
+    "ABU HASAN": false},
+      "proofs": {"ZUHAIR ALSAFFAR": false,
+        "HUSAIN YUSUF": "husain_mar26.jpeg",
+        "HABIB KHAMIS": "habib_mar26.jpeg",
+    "ABU ADEL": false,
+    "HASAN SAHWAN": "hasan_mar26.jpeg",
+    "UM AHMED": false,
+    "JAFFAR JUMA": false,
+    "ABU HASAN": false}
     },
     "Apr-26": {
       "recipient": "UM AHMED",
