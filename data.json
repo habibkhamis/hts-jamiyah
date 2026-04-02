@@ -165,7 +165,7 @@
         "HABIB KHAMIS": true,
     "ABU ADEL": false,
     "HASAN SAHWAN": true,
-    "UM AHMED": false,
+    "UM AHMED": true,
     "JAFFAR JUMA": false,
     "ABU HASAN": false},
       "proofs": {"ZUHAIR ALSAFFAR": false,
@@ -173,7 +173,7 @@
         "HABIB KHAMIS": "habib_mar26.jpeg",
     "ABU ADEL": false,
     "HASAN SAHWAN": "hasan_mar26.jpeg",
-    "UM AHMED": false,
+    "UM AHMED": "umahmed_mar26.jpeg",
     "JAFFAR JUMA": false,
     "ABU HASAN": false}
     },
