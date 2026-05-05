@@ -193,11 +193,18 @@ fetch('data.json')
         const paidText = isPaid ? 'Paid' : 'Pending';
 
         let proofHTML;
-        if(info.proofs[user] && isPaid) {
-          proofHTML = `<img class="proof-img" src="proof/${info.proofs[user]}" alt="${user} proof" onclick="openModal('proof/${info.proofs[user]}')">`;
-        } else {
-          proofHTML = 'Pending';
-        }
+const proof = info.proofs[user];
+
+if (typeof proof === 'string' && isPaid) {
+  // ✅ Has image
+  proofHTML = `<img class="proof-img" src="proof/${proof}" alt="${user} proof" onclick="openModal('proof/${proof}')">`;
+} else if (proof === true && isPaid) {
+  // ✅ Paid but no image
+  proofHTML = '<span style="color:green;font-weight:bold;">Paid</span>';
+} else {
+  // ❌ Not paid
+  proofHTML = 'Pending';
+}
 
         tr.innerHTML = `<td>${user}</td><td>${paidText}</td><td>${proofHTML}</td>`;
         tbody.appendChild(tr);
