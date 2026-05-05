@@ -189,8 +189,22 @@
         "JAFFAR JUMA",
         "ABU HASAN"
       ],
-      "paid": {},
-      "proofs": {}
+      "paid": {"ZUHAIR ALSAFFAR": true,
+        "HUSAIN YUSUF": true,
+        "HABIB KHAMIS": true,
+    "ABU ADEL": true,
+    "HASAN SAHWAN": true,
+    "RAJA": true,
+    "JAFFAR JUMA": true,
+    "ABU HASAN": true},
+      "proofs": {"ZUHAIR ALSAFFAR": "zuhair_apr26.jpeg",
+        "HUSAIN YUSUF": "husain_apr26.jpeg",
+        "HABIB KHAMIS": "habib_apr26.jpeg",
+    "ABU ADEL": "abuadel_apr26.jpeg",
+    "HASAN SAHWAN": "hasan_apr26.jpeg",
+    "RAJA": "raja_apr26.jpeg",
+    "JAFFAR JUMA": true,
+    "ABU HASAN": true}
     },
     "May-26": {
       "recipient": "JAFFAR JUMA",
@@ -204,8 +218,22 @@
         "UM AHMED",
         "ABU HASAN"
       ],
-      "paid": {},
-      "proofs": {}
+      "paid": {"ZUHAIR ALSAFFAR": false,
+        "HUSAIN YUSUF": false,
+        "HABIB KHAMIS": false,
+    "ABU ADEL": false,
+    "HASAN SAHWAN": false,
+    "RAJA": false,
+    "UM AHMED": true,
+    "ABU HASAN": false},
+      "proofs": {"ZUHAIR ALSAFFAR": false,
+        "HUSAIN YUSUF": false,
+        "HABIB KHAMIS": false,
+    "ABU ADEL": false,
+    "HASAN SAHWAN": false,
+    "RAJA": false,
+    "UM AHMED": true,
+    "ABU HASAN": false}
     },
     "Jun-26": {
       "recipient": "ABU HASAN",
@@ -219,8 +247,22 @@
         "UM AHMED",
         "JAFFAR JUMA"
       ],
-      "paid": {},
-      "proofs": {}
+      "paid": {"ZUHAIR ALSAFFAR": false,
+        "HUSAIN YUSUF": false,
+        "HABIB KHAMIS": false,
+    "ABU ADEL": false,
+    "HASAN SAHWAN": false,
+    "RAJA": false,
+    "UM AHMED": true,
+    "JAFFAR JUMA": false},
+      "proofs": {"ZUHAIR ALSAFFAR": false,
+        "HUSAIN YUSUF": false,
+        "HABIB KHAMIS": false,
+    "ABU ADEL": false,
+    "HASAN SAHWAN": false,
+    "RAJA": false,
+    "UM AHMED": true,
+    "JAFFAR JUMA": false}
     },
     "Jul-26": {
       "recipient": "ABU HASAN",
@@ -234,8 +276,22 @@
         "UM AHMED",
         "JAFFAR JUMA"
       ],
-      "paid": {},
-      "proofs": {}
+      "paid": {"ZUHAIR ALSAFFAR": false,
+        "HUSAIN YUSUF": false,
+        "HABIB KHAMIS": false,
+    "ABU ADEL": false,
+    "HASAN SAHWAN": false,
+    "RAJA": false,
+    "UM AHMED": true,
+    "JAFFAR JUMA": false},
+      "proofs": {"ZUHAIR ALSAFFAR": false,
+        "HUSAIN YUSUF": false,
+        "HABIB KHAMIS": false,
+    "ABU ADEL": false,
+    "HASAN SAHWAN": false,
+    "RAJA": false,
+    "UM AHMED": true,
+    "JAFFAR JUMA": false}
     }
   }
 }
